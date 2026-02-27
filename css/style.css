@@ -1,0 +1,501 @@
+/* ============================================================
+ VARIÁVEIS GLOBAIS
+============================================================ */
+:root {
+    /* Cores principais */
+    --cor-fundo:        #0d0d0d;    /* Fundo geral da página */
+    --cor-fundo-alt:    #141414;    /* Fundo de seções alternadas */
+    --cor-card:         #1a1a1a;    /* Fundo de cards/caixas */
+    --cor-borda:        #2a2a2a;    /* Cor das bordas suaves */
+
+    /* Cores de texto */
+    --cor-texto:        #e8e8e8;    /* Texto padrão */
+    --cor-texto-fraco:  #888888;    /* Texto secundário/placeholder */
+    --cor-titulo:       #ffffff;    /* Títulos e destaques */
+
+    /* Cor de destaque (acento)  */
+    --cor-acento:       #00e5a0;    /* Verde-menta vibrante */
+    --cor-acento-escuro:#00b37a;    /* Versão mais escura do acento (hover) */
+
+    /* Tipografia */
+    --fonte-titulo:     'Syne', sans-serif;       /* Fonte dos títulos */
+    --fonte-corpo:      'DM Sans', sans-serif;    /* Fonte do corpo de texto */
+
+    /* Espaçamentos */
+    --padding-secao:    100px 0;    /* Espaço vertical entre seções */
+    --raio-borda:       12px;       /* Arredondamento de bordas */
+
+    /* Transições */
+    --transicao:        0.3s ease;
+}
+
+
+/* ============================================================
+ RESET & BASE
+   - Comportamentos padrão para o site inteiro
+============================================================ */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    /* Rolagem suave ao clicar em âncoras */
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: var(--cor-fundo);
+    color: var(--cor-texto);
+    font-family: var(--fonte-corpo);
+    font-size: 1rem;
+    line-height: 1.7;
+    overflow-x: hidden; /* Evita scroll horizontal indesejado */
+}
+
+/* Links sem decoração padrão */
+a {
+    text-decoration: none;
+    color: inherit;
+    transition: color var(--transicao);
+}
+
+/* Imagens responsivas por padrão */
+img {
+    max-width: 100%;
+    display: block;
+}
+
+/* Títulos de seção — classe reutilizável */
+.subtitulo {
+    font-family: var(--fonte-titulo);
+    font-size: 0.85rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--cor-acento);
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 16px;
+    border: none; /* Remove o <u> padrão do HTML */
+}
+
+/* Container centralizado */
+.container-custom {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+
+/* ============================================================
+ SCROLLBAR CUSTOMIZADA
+============================================================ */
+::-webkit-scrollbar {
+    width: 6px;
+}
+::-webkit-scrollbar-track {
+    background: var(--cor-fundo);
+}
+::-webkit-scrollbar-thumb {
+    background: var(--cor-borda);
+    border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--cor-acento);
+}
+
+
+/* ============================================================
+ NAVBAR
+============================================================ */
+header {
+    position: fixed;         /* Fica fixo no topo ao rolar */
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    padding: 20px 40px;
+    background: transparent;
+    transition: background var(--transicao), 
+                border-bottom var(--transicao),
+                padding var(--transicao);
+}
+
+/* Classe adicionada via jQuery quando o usuário rola a página */
+header.scrolled {
+    background: rgba(13, 13, 13, 0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--cor-borda);
+    padding: 14px 40px;
+}
+
+/* Lista de navegação */
+.nav {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    gap: 8px;
+}
+
+.nav-item .nav-link {
+    font-family: var(--fonte-titulo);
+    font-size: 0.8rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--cor-texto-fraco);
+    padding: 8px 16px;
+    border-radius: 20px;
+    transition: color var(--transicao), background var(--transicao);
+}
+
+.nav-item .nav-link:hover,
+.nav-item .nav-link.active {
+    color: var(--cor-titulo);
+    background: var(--cor-card);
+}
+
+
+/* ============================================================
+   SEÇÃO: INTRODUÇÃO (HERO)
+   - A primeira tela que o usuário vê
+============================================================ */
+.introduction {
+    min-height: 100vh;          
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 120px 24px 80px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* Subtítulo acima do nome */
+.introduction .saudacao {
+    font-size: 1rem;
+    color: var(--cor-acento);
+    font-family: var(--fonte-titulo);
+    letter-spacing: 2px;
+    margin-bottom: 16px;
+    opacity: 0;             /* Começa invisível para a animação */
+    animation: fadeUp 0.7s ease forwards;
+    animation-delay: 0.1s;
+}
+
+/* Título principal — nome do dono do portfólio */
+.introduction h1 {
+    font-family: var(--fonte-titulo);
+    font-size: clamp(2.5rem, 7vw, 5rem);  /* Tamanho responsivo */
+    font-weight: 800;
+    line-height: 1.1;
+    color: var(--cor-titulo);
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: fadeUp 0.7s ease forwards;
+    animation-delay: 0.25s;
+}
+
+/* Parágrafo de descrição */
+.introduction p {
+    font-size: 1.15rem;
+    color: var(--cor-texto-fraco);
+    max-width: 540px;
+    margin-bottom: 40px;
+    opacity: 0;
+    animation: fadeUp 0.7s ease forwards;
+    animation-delay: 0.4s;
+}
+
+.introduction p b {
+    color: var(--cor-texto);
+}
+
+/* Área de botões e links sociais */
+.introduction .contato {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.7s ease forwards;
+    animation-delay: 0.55s;
+}
+
+/* Botão principal "Entre em contato" */
+.introduction .btn-primary {
+    background: var(--cor-acento);
+    border: none;
+    color: #000;
+    font-family: var(--fonte-titulo);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 14px 28px;
+    border-radius: 6px;
+    transition: background var(--transicao), transform var(--transicao);
+}
+.introduction .btn-primary:hover {
+    background: var(--cor-acento-escuro);
+    transform: translateY(-2px);
+}
+
+/* Links sociais (GitHub, etc.) */
+.introduction .link-social {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--cor-texto-fraco);
+    font-size: 0.9rem;
+    transition: color var(--transicao);
+}
+.introduction .link-social:hover {
+    color: var(--cor-titulo);
+}
+.introduction .link-social img {
+    width: 22px;
+    /* Deixa o ícone branco (para ícones SVG que suportam filter) */
+    filter: invert(1);
+    opacity: 0.6;
+    transition: opacity var(--transicao);
+}
+.introduction .link-social:hover img {
+    opacity: 1;
+}
+
+
+/* ============================================================
+ SEÇÃO: HABILIDADES
+============================================================ */
+.habilidades {
+    padding: var(--padding-secao);
+    background: var(--cor-fundo-alt);
+    border-top: 1px solid var(--cor-borda);
+    border-bottom: 1px solid var(--cor-borda);
+}
+
+.habilidades .container-custom {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+/* Grid de categorias de habilidades */
+.habilidades .grid-habilidades {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 24px;
+    margin-top: 48px;
+}
+
+/* Card de cada categoria */
+.habilidades .card-habilidades {
+    background: var(--cor-card);
+    border: 1px solid var(--cor-borda);
+    border-radius: var(--raio-borda);
+    padding: 28px;
+    transition: border-color var(--transicao), transform var(--transicao);
+
+    /* Começa invisível para a animação de entrada */
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+/* Animação ativa via jQuery quando o card entra na tela */
+.habilidades .card-habilidades.visivel {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.5s ease, transform 0.5s ease,
+                border-color var(--transicao);
+}
+
+.habilidades .card-habilidades:hover {
+    border-color: var(--cor-acento);
+    transform: translateY(-4px);
+}
+
+/* Título do card (ex: "Linguagens") */
+.habilidades .titulo-card {
+    font-family: var(--fonte-titulo);
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--cor-acento);
+    margin-bottom: 18px;
+    display: block;
+}
+
+/* Lista de tecnologias dentro do card */
+.habilidades .lista-tech {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.habilidades .lista-tech span {
+    font-size: 0.95rem;
+    color: var(--cor-texto-fraco);
+    transition: color var(--transicao);
+}
+.habilidades .card-habilidades:hover .lista-tech span {
+    color: var(--cor-texto);
+}
+
+
+/* ============================================================
+ SEÇÃO: CONTATO
+============================================================ */
+.contato-final {
+    padding: var(--padding-secao);
+}
+
+.contato-final .container-custom {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+/* Título grande da seção */
+.contato-final h1 {
+    font-family: var(--fonte-titulo);
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 800;
+    line-height: 1.15;
+    color: var(--cor-titulo);
+    margin-bottom: 48px;
+    margin-top: 12px;
+}
+
+.contato-final h1 b {
+    color: var(--cor-acento);
+}
+
+/* Grade de opções de contato */
+.contato-final .grid-contato {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+}
+
+/* Cada item de contato (email, whatsapp, linkedin) */
+.contato-final .item-contato {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: var(--cor-card);
+    border: 1px solid var(--cor-borda);
+    border-radius: var(--raio-borda);
+    padding: 20px 22px;
+    color: var(--cor-texto-fraco);
+    font-size: 0.9rem;
+    transition: border-color var(--transicao), 
+                color var(--transicao),
+                transform var(--transicao);
+}
+.contato-final .item-contato:hover {
+    border-color: var(--cor-acento);
+    color: var(--cor-titulo);
+    transform: translateY(-3px);
+}
+
+/* Ícone do item de contato */
+.contato-final .item-contato .icone {
+    font-size: 1.3rem;
+    flex-shrink: 0;
+}
+
+/* Textos dentro do item */
+.contato-final .item-contato .info small {
+    display: block;
+    font-size: 0.7rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--cor-acento);
+    font-family: var(--fonte-titulo);
+    margin-bottom: 3px;
+}
+.contato-final .item-contato .info strong {
+    display: block;
+    font-size: 0.9rem;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+/* ============================================================
+ FOOTER
+============================================================ */
+footer {
+    border-top: 1px solid var(--cor-borda);
+    padding: 32px 24px;
+    text-align: center;
+    color: var(--cor-texto-fraco);
+    font-size: 0.82rem;
+}
+
+footer span {
+    color: var(--cor-acento);
+}
+
+
+/* ============================================================
+ ANIMAÇÕES (keyframes)
+============================================================ */
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(24px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* ============================================================
+  RESPONSIVIDADE (mobile-first breakpoints)
+============================================================ */
+
+/* Tablets e menores */
+@media (max-width: 768px) {
+    header {
+        padding: 16px 20px;
+    }
+
+    .nav-item .nav-link {
+        padding: 6px 10px;
+        font-size: 0.72rem;
+    }
+
+    .introduction {
+        padding: 100px 20px 60px;
+    }
+
+    .habilidades .grid-habilidades {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .contato-final h1 {
+        font-size: 2rem;
+    }
+}
+
+/* Celulares */
+@media (max-width: 480px) {
+    .habilidades .grid-habilidades {
+        grid-template-columns: 1fr;
+    }
+
+    .introduction .contato {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .contato-final .grid-contato {
+        grid-template-columns: 1fr;
+    }
+}

@@ -1,0 +1,275 @@
+/* ============================================================
+   carousel.css — estilos do carrossel de projetos
+============================================================ */
+
+/* ============================================================
+   SEÇÃO WRAPPER
+============================================================ */
+.projetos {
+  padding: var(--padding-secao);
+  background: var(--cor-fundo);
+  border-top: 1px solid var(--cor-borda);
+  border-bottom: 1px solid var(--cor-borda);
+}
+
+/* ============================================================
+   CONTAINER DO CARROSSEL
+   position: relative ancora os botões absolutos em desktop.
+   Em mobile vira flexbox (ver media query abaixo).
+============================================================ */
+.carrossel-projetos {
+  position: relative;
+  margin-top: 48px;
+  padding: 0 56px; /* espaço lateral para os botões absolutos */
+}
+
+/* ============================================================
+   JANELA VISÍVEL
+   overflow: hidden esconde os cards fora da área visível.
+============================================================ */
+.carousel-track-wrapper {
+  overflow: hidden;
+  border-radius: var(--raio-borda);
+}
+
+/* ============================================================
+   TRILHO — faixa com todos os cards em linha
+   O JS move este elemento via transform: translateX()
+============================================================ */
+.carousel-track {
+  display: flex;
+  gap: 24px;
+  transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
+}
+
+/* ============================================================
+   CARD DE PROJETO
+   min-width é definido pelo JS com base na largura do wrapper
+============================================================ */
+.projeto-card {
+  flex: 0 0 auto;
+  background: var(--cor-card);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-borda);
+  overflow: hidden;
+  transition:
+    border-color var(--transicao),
+    transform var(--transicao);
+  cursor: pointer;
+}
+
+.projeto-card:hover {
+  border-color: var(--cor-acento);
+  transform: translateY(-4px);
+}
+
+/* Imagem ou placeholder emoji */
+.projeto-card .card-imagem {
+  max-height: 180px;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  display: block;
+  background: var(--cor-fundo-alt);
+}
+
+.projeto-card .card-imagem.sem-imagem {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  min-height: 180px;
+  background: var(--cor-fundo-alt);
+}
+
+/* Corpo do card */
+.projeto-card .card-body {
+  padding: 22px 24px 26px;
+}
+
+.projeto-card .card-tag {
+  display: inline-block;
+  font-family: var(--fonte-titulo);
+  font-size: 0.68rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--cor-acento);
+  margin-bottom: 10px;
+}
+
+.projeto-card .card-titulo {
+  font-family: var(--fonte-titulo);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--cor-titulo);
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+
+.projeto-card .card-descricao {
+  font-size: 0.88rem;
+  color: var(--cor-texto-fraco);
+  line-height: 1.6;
+  margin-bottom: 20px;
+
+  /* Trunca em 3 linhas com reticências */
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* prefixo antigo — mantido para compatibilidade */
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.projeto-card .card-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.82rem;
+  font-family: var(--fonte-titulo);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--cor-acento);
+  transition: gap var(--transicao);
+}
+
+.projeto-card:hover .card-link {
+  gap: 10px;
+}
+
+/* ============================================================
+   BOTÕES DE NAVEGAÇÃO — Desktop
+   Ficam ancorados nas laterais do .carrossel-projetos
+============================================================ */
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--cor-borda);
+  background: var(--cor-card);
+  color: var(--cor-texto);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  outline: none;
+  padding: 0;
+  font-size: 1rem;
+  line-height: 1;
+  transition:
+    background var(--transicao),
+    border-color var(--transicao);
+}
+
+.carousel-btn:hover {
+  background: var(--cor-acento);
+  border-color: var(--cor-acento);
+  color: #000;
+}
+
+.carousel-btn-left {
+  left: 0;
+}
+.carousel-direita {
+  right: 0;
+}
+
+.carousel-btn:disabled {
+  opacity: 0.25;
+  cursor: default;
+  pointer-events: none;
+}
+
+/* ============================================================
+   BOLINHAS INDICADORAS
+============================================================ */
+.carousel-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 28px;
+}
+
+.carousel-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--cor-borda);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  outline: none;
+  transition:
+    background var(--transicao),
+    width var(--transicao),
+    border-radius var(--transicao);
+}
+
+.carousel-dot.ativo {
+  background: var(--cor-acento);
+  width: 20px;
+  border-radius: 3px;
+}
+
+/* ============================================================
+   RESPONSIVIDADE — Tablet
+============================================================ */
+@media (max-width: 900px) {
+  .carrossel-projetos {
+    padding: 0 48px;
+  }
+}
+
+/* ============================================================
+   RESPONSIVIDADE — Mobile
+   Problema anterior: botões viravam position:static mas o
+   container era column-flex, então empilhavam verticalmente.
+
+   Solução: container vira flex-wrap. Usamos "order" para
+   reorganizar os elementos em duas linhas:
+     Linha 1 (order 1): .carousel-track-wrapper  → largura total
+     Linha 2 (order 2): botão esq | dots | botão dir → centralizado
+
+   Isso não exige nenhuma mudança no HTML.
+============================================================ */
+@media (max-width: 600px) {
+  .carrossel-projetos {
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0;
+  }
+
+  /* Linha 1: track ocupa 100% da largura */
+  .carousel-track-wrapper {
+    order: 1;
+    flex: 0 0 100%;
+  }
+
+  /* Linha 2: botões e dots em linha */
+  .carousel-btn {
+    order: 2;
+    position: static; /* sai do posicionamento absoluto */
+    transform: none;
+    margin-top: 20px;
+    flex: 0 0 auto;
+  }
+
+  .carousel-dots {
+    order: 3; /* dots ficam entre os dois botões */
+    flex: 1; /* ocupa o espaço restante */
+    margin-top: 20px;
+    align-self: center;
+  }
+
+  /* Botão direito vem depois dos dots */
+  .carousel-direita {
+    order: 4;
+  }
+}
